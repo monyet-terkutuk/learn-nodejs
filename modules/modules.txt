@@ -1,0 +1,12 @@
+// ada tiga tipe moduls
+- core moduls  "modul yg ada di node js"
+- local moduls "modul biatan kita sendiri"
+- third party modul "modul buatan org lain biasanya di npm"
+
+// require()
+saat menggunakan require, fungsi require akan mencari file dengan urutan,
+- core modules " ia akan mencari file dari core module dulu"
+> jika tidak ada maka mencari ke local
+- lokal modul (./ atau ../)
+> jika tidak ada maka turun ke npm mencari thirdparty
+- folder node_modules -> npm
