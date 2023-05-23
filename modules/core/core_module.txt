@@ -1,0 +1,21 @@
+- writeFileSync
+    untuk menulisakan sesuatu ke dalam sebuah file secara syncronus 
+
+- writeFile
+    untuk menulisakan sesuatu secara asyncronus
+
+- mkdir
+    untuk membuat folder secara asyncronus
+
+- mkdirSync 
+    membuat folder secara syncronus
+
+- readFileSync
+    membaca ini file secara syncronus
+
+- readFile
+    membaca file secara asyncronus   
+
+*Handle error di js adalah menggunakan try catch
+
+*Tapi klo menggunakan asyncronus, handle error menggunakan callback
