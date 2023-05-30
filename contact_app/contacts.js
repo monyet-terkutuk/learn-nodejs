@@ -1,13 +1,12 @@
-const { rejects } = require("assert");
-const { promises } = require("dns");
 const fs = require(`fs`);
-const { resolve } = require("path");
-const readline = require("readline");
-const { json } = require("stream/consumers");
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const chalk = require("chalk");
+const validasi = require("validator");
+const { default: isEmail } = require("validator/lib/isEmail");
+
+// const rl = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout,
+// });
 
 // membuat folder data jika tidak ada.
 const dirPath = "./data";
@@ -21,14 +20,14 @@ if (!fs.existsSync(dataPath)) {
   fs.writeFileSync(dataPath, "[]", "utf8");
 }
 
-// membungkus semua pertanyaan menjadi promise
-const tulisPertanyaan = (pertanyaan) => {
-  return new Promise((resolve, rejects) => {
-    rl.question(pertanyaan, (nama) => {
-      resolve(nama);
-    });
-  });
-};
+// // membungkus semua pertanyaan menjadi promise
+// const tulisPertanyaan = (pertanyaan) => {
+//   return new Promise((resolve, rejects) => {
+//     rl.question(pertanyaan, (nama) => {
+//       resolve(nama);
+//     });
+//   });
+// };
 
 // const pertanyaan2 = () => {
 //   return new Promise((resolve, rejects) => {
@@ -43,11 +42,33 @@ const simpanContact = (nama, email, noHP) => {
   const file = fs.readFileSync("data/contacts.json", "utf-8");
   const contacts = JSON.parse(file);
 
+  // cek data yang duplikat
+  const duplikat = contacts.find((contact) => contact.nama === nama);
+  if (duplikat) {
+    console.log(
+      chalk.yellow.bold.bgRed("Contact sudah terdaftar, gunakan nama lain!")
+    );
+    return false;
+  }
+
+  // validasi email
+  if (email) {
+    if (!validasi.isEmail(email)) {
+      console.log(chalk.yellow.bold.bgRed("Email tidak valid!"));
+      return false;
+    }
+  }
+
+  // validasi noHP
+  if (!validasi.isMobilePhone(noHP, "id-ID")) {
+    console.log(chalk.yellow.bold.bgRed("No Handphone tidak valid!"));
+    return false;
+  }
+
   contacts.push(contact);
 
   fs.writeFileSync("data/contacts.json", JSON.stringify(contacts));
-
-  rl.close();
+  console.log(chalk.white.bold.bgGreen("Data Berhasil Tersimpan!"));
 };
 
 // rl.question("Masukan Nama : ", (nama) => {
@@ -64,4 +85,4 @@ const simpanContact = (nama, email, noHP) => {
 //   });
 // });
 
-module.exports = { tulisPertanyaan, simpanContact };
+module.exports = { simpanContact };
