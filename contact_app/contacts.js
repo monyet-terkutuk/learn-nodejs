@@ -37,10 +37,17 @@ if (!fs.existsSync(dataPath)) {
 //   });
 // };
 
-const simpanContact = (nama, email, noHP) => {
-  const contact = { nama, email, noHP };
+const loadContacts = () => {
   const file = fs.readFileSync("data/contacts.json", "utf-8");
   const contacts = JSON.parse(file);
+  return contacts;
+};
+
+const simpanContact = (nama, email, noHP) => {
+  const contact = { nama, email, noHP };
+  // const file = fs.readFileSync("data/contacts.json", "utf-8");
+  // const contacts = JSON.parse(file);
+  const contacts = loadContacts();
 
   // cek data yang duplikat
   const duplikat = contacts.find((contact) => contact.nama === nama);
@@ -85,4 +92,54 @@ const simpanContact = (nama, email, noHP) => {
 //   });
 // });
 
-module.exports = { simpanContact };
+const listContacts = () => {
+  const contacts = loadContacts();
+  console.log(chalk.red.bold("Daftar Kontak : "));
+  contacts.forEach((contact, i) => {
+    console.log(
+      chalk.yellow.bold(`${i + 1} . ${contact.nama} - ${contact.noHP}`)
+    );
+  });
+};
+
+const detailContact = (nama) => {
+  const contacts = loadContacts();
+  const data = contacts.find(
+    (contact) => contact.nama.toLowerCase() === nama.toLowerCase()
+  );
+
+  if (!data) {
+    console.log(
+      chalk.yellow.bold.bgRed(`Data dengan nama ${nama} tidak di temukan!`)
+    );
+    return false;
+  }
+
+  console.log(chalk.green.bold.bgBlue(`Data Contact ${data.nama}`));
+  console.log(chalk.yellow.bold(`No HP : ${data.noHP}`));
+  if (data.email) {
+    console.log(chalk.yellow.bold(`Email : ${data.email}`));
+  }
+};
+
+const deleteContact = (nama) => {
+  const contacts = loadContacts();
+
+  const newContacts = contacts.filter(
+    (contact) => contact.nama.toLowerCase() !== nama.toLowerCase()
+  );
+
+  if (contacts.length === newContacts.length) {
+    console.log(
+      chalk.yellow.bold.bgRed(`Data dengan nama ${nama} tidak di temukan!`)
+    );
+    return false;
+  }
+
+  fs.writeFileSync("data/contacts.json", JSON.stringify(newContacts));
+  console.log(
+    chalk.white.bold.bgGreen(`Data contact ${nama} berhasil dihapus!!`)
+  );
+};
+
+module.exports = { simpanContact, listContacts, detailContact, deleteContact };

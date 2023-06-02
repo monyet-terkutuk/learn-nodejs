@@ -14,33 +14,76 @@ const contacts = require("./contacts");
 //   }
 // );
 
+yargs
+  .command({
+    command: "add",
+    describe: "menambahkan contact baru",
+    builder: {
+      name: {
+        describe: "Nama Lengkap",
+        demandOption: true,
+        type: "string",
+      },
+      email: {
+        describe: "Email Anda",
+        demandOption: false,
+        type: "string",
+      },
+      noHP: {
+        describe: "No HandPhone",
+        demandOption: true,
+        type: "string",
+      },
+    },
+    handler(argv) {
+      const contact = {
+        name: argv.name,
+        email: argv.email,
+        noHP: argv.noHP,
+      };
+      contacts.simpanContact(contact.name, contact.email, contact.noHP);
+    },
+  })
+  .demandCommand();
+
+// menampilkan list contact (nama,noHP)
 yargs.command({
-  command: "add",
-  describe: "menambahkan contact baru",
+  command: "list",
+  describe: "Menampilkan semua nama & no HP contact",
+  handler() {
+    contacts.listContacts();
+  },
+});
+
+// detail contact
+yargs.command({
+  command: "detail",
+  describe: "Menampilkan detail contact",
   builder: {
     name: {
-      describe: "Nama Lengkap",
-      demandOption: true,
-      type: "string",
-    },
-    email: {
-      describe: "Email Anda",
-      demandOption: false,
-      type: "string",
-    },
-    noHP: {
-      describe: "No HandPhone",
+      describe: "Nama contact",
       demandOption: true,
       type: "string",
     },
   },
   handler(argv) {
-    const contact = {
-      name: argv.name,
-      email: argv.email,
-      noHP: argv.noHP,
-    };
-    contacts.simpanContact(contact.name, contact.email, contact.noHP);
+    contacts.detailContact(argv.name);
+  },
+});
+
+// delete contact
+yargs.command({
+  command: "delete",
+  describe: "Menghapus data contact",
+  builder: {
+    name: {
+      describe: "Nama contact",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler(argv) {
+    contacts.deleteContact(argv.name);
   },
 });
 
