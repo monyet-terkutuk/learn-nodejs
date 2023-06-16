@@ -2,21 +2,13 @@ const express = require("express");
 app = express();
 const port = 9000;
 const expressLayouts = require("express-ejs-layouts");
-const morgan = require("morgan");
 
 app.set("view engine", "ejs");
 // third party midlleware
 app.use(expressLayouts);
-app.use(morgan("dev"));
 
 // built-in middleware
 app.use(express.static("public"));
-
-// middleware
-app.use((req, res, next) => {
-  console.log("Time : ", Date.now());
-  next();
-});
 
 app.get("/", (req, res) => {
   const mahasiswa = [
@@ -56,12 +48,6 @@ app.get("/contact", (req, res) => {
     layout: "layouts/main",
     title: "Contact Page",
   });
-});
-
-app.get("/product/:id", (req, res) => {
-  res.send(
-    `Product ID : ${req.params.id} <br> Category : ${req.query.category}`
-  );
 });
 
 app.use("/", (req, res) => {
