@@ -19,6 +19,12 @@ const loadContacts = () => {
 };
 
 // ambil data contact berdasarkan nama
-const findContact = (nama) => {};
+const findContact = (nama) => {
+  const contacts = loadContacts();
+  const contact = contacts.find(
+    (contact) => contact.nama.toLowerCase() === nama.toLowerCase()
+  );
+  return contact;
+};
 
 module.exports = { loadContacts, findContact };
