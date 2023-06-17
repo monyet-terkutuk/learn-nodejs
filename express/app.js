@@ -11,6 +11,7 @@ app.use(expressLayouts);
 
 // built-in middleware
 app.use(express.static("public"));
+app.use(express.urlencoded());
 
 app.get("/", (req, res) => {
   const mahasiswa = [
@@ -52,6 +53,19 @@ app.get("/contact", (req, res) => {
     title: "Contact Page",
     contacts: contacts,
   });
+});
+
+// form tambah contact
+app.get("/contact/add", (req, res) => {
+  res.render("add-contact", {
+    layout: "layouts/main",
+    title: "Add Contact",
+  });
+});
+
+app.post("/contact", (req, res) => {
+  console.log(req.body);
+  res.send("data berhasil dikirim!");
 });
 
 app.get("/contact/:nama", (req, res) => {
