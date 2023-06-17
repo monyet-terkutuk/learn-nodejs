@@ -1,7 +1,9 @@
 const express = require("express");
-app = express();
-const port = 9000;
 const expressLayouts = require("express-ejs-layouts");
+const { loadContacts } = require("./utils/contacts");
+
+const app = express();
+const port = 9000;
 
 app.set("view engine", "ejs");
 // third party midlleware
@@ -44,9 +46,20 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
+  const contacts = loadContacts();
   res.render("contact", {
     layout: "layouts/main",
     title: "Contact Page",
+    contacts: contacts,
+  });
+});
+
+app.get("/contact/:nama", (req, res) => {
+  // const contact = findContact(req.params.nama);
+  res.render("detail", {
+    layout: "layouts/main",
+    title: "Detail Contact Page",
+    // contact,
   });
 });
 
