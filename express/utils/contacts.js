@@ -51,10 +51,21 @@ const deleteContact = (nama) => {
   saveContacts(filteredContacts);
 };
 
+const updateContacts = (contactBaru) => {
+  const contacts = loadContacts();
+  const filteredContacts = contacts.filter(
+    (contact) => contact.nama !== contactBaru.oldNama
+  );
+  delete contactBaru.oldNama;
+  filteredContacts.push(contactBaru);
+  saveContacts(filteredContacts);
+};
+
 module.exports = {
   loadContacts,
   findContact,
   addContact,
   cekDuplikat,
   deleteContact,
+  updateContacts,
 };
