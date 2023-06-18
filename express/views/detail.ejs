@@ -17,7 +17,18 @@
             <%= contact.nohp %>
           </h6>
           <p class="card-text"><%= contact.email %></p>
-          <a href="/contact" class="card-link">&laquo; Kembali</a>
+          <a
+            href="/contact/delete/<%= contact.nama %>"
+            class="btn btn-danger btn-sm"
+            onclick="return confirm('yakin hapus data?')"
+            >hapus</a
+          >
+          <a
+            href="/contact/edit/<%= contact.nama %>"
+            class="btn btn-info text-white btn-sm"
+            >edit</a
+          >
+          <a href="/contact" class="card-link d-block mt-3">&laquo; Kembali</a>
         </div>
       </div>
 
